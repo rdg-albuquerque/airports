@@ -1,0 +1,109 @@
+:root {
+  --md: 765px;
+  --lg: 1440px;
+  --primary-color: #3f6db8;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.App {
+  background-color: var(--primary-color);
+  padding-top: 50px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  font-family: "Roboto", Times, serif;
+}
+
+.container {
+  padding: 0 20px 0 20px;
+  text-align: center;
+  color: white;
+}
+
+.title {
+  font-size: 50px;
+  margin-bottom: 30px;
+}
+
+.statusFilterLabel {
+  margin-right: 5px;
+}
+
+.airports-table-wrapper {
+  margin-top: 10px;
+  max-height: 600px;
+  width: 60vw;
+
+  overflow: auto;
+}
+
+.airports-table {
+  border-collapse: collapse;
+  padding-top: 10px;
+  max-height: 300px;
+  width: 100%;
+  overflow: auto;
+
+  background-color: white;
+  color: black;
+}
+
+.airports-table thead,
+.airports-table tr {
+  padding-left: 10px;
+  height: 50px;
+  border-bottom: 1px solid #3f6db83d;
+}
+
+.airports-table thead {
+  color: var(--primary-color);
+}
+
+.airports-table th,
+.airports-table td {
+  padding: 0 20px;
+}
+
+.airports-table > td {
+  margin-bottom: 10px;
+  border-color: black;
+}
+
+.airports-table > tr:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.row-btn {
+  color: white;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 4px;
+  width: 80px;
+  height: 30px;
+
+  cursor: pointer;
+}
+
+.row-btn:hover {
+  background-color: #143466;
+}
+
+@media screen and (max-width: 765px) {
+  .title {
+    font-size: 35px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .airports-table-wrapper {
+    width: 90vw;
+  }
+  .airports-table {
+    width: 90vw;
+  }
+}
