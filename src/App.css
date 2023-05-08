@@ -1,6 +1,4 @@
 :root {
-  --md: 765px;
-  --lg: 1440px;
   --primary-color: #3f6db8;
 }
 
@@ -99,7 +97,7 @@
   }
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1400px) {
   .airports-table-wrapper {
     width: 90vw;
   }

@@ -21,7 +21,7 @@ function App() {
           "Content-Type": "application/json",
           Authorization:
             "Basic " +
-            btoa(
+            window.btoa(
               `${process.env.REACT_APP_API_USERNAME}:${process.env.REACT_APP_API_PASSWORD}`
             ),
         },
