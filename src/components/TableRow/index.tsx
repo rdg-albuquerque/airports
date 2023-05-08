@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import type Airport from "../../types/airport";
 import { useGlobal } from "../../hooks/useGlobal";
 
@@ -8,11 +8,18 @@ type Props = {
 
 const TableRow = ({ airport }: Props): JSX.Element => {
   const { updateAirport } = useGlobal();
+  const isFetching = useRef(false);
+
 
   const handleBtnClick = async () => {
+    if (isFetching.current) return;
+
     try {
+      isFetching.current = true
       await updateAirport(airport);
+      isFetching.current = false
     } catch (error: any) {
+      isFetching.current = true
       console.error(error.message);
     }
   };

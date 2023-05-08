@@ -47,6 +47,7 @@ const useGlobalProvider = (): UseGlobalType => {
     );
 
     if (!response.ok) {
+      isFetching.current = false;
       throw new Error(response.statusText);
     }
 
