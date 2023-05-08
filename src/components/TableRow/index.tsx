@@ -1,35 +1,21 @@
 import React from "react"
-import Airport from "../../types/airport"
+import type Airport from "../../types/airport"
+import { useGlobal } from "../../hooks/useGlobal"
 
 type Props = {
   airport: Airport
-  getAirports: () => void
 }
 
-const TableRow = ({ airport, getAirports }: Props): JSX.Element => {
+const TableRow = ({ airport }: Props): JSX.Element => {
+  const {getAirports, updateAirport} = useGlobal()
+
   const handleBtnClick = async () => {
-    const response = await fetch(
-      `https://flights-api.herokuapp.com/airportStatus/${airport.iata}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization:
-            "Basic " +
-            window.btoa(
-              `${process.env.REACT_APP_API_USERNAME}:${process.env.REACT_APP_API_PASSWORD}`
-            ),
-        },
-        body: JSON.stringify({ active: !airport.active }),
-      }
-    )
+    try {
+      await updateAirport(airport)
 
-    if (!response.ok) {
-      throw new Error(response.statusText)
+    } catch (error: any) {
+      console.error(error.message)
     }
-
-    // Get updated list after update some airport
-    getAirports()
   }
 
   return (
