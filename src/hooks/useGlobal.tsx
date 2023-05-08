@@ -1,35 +1,41 @@
-import { createContext, useContext, useRef, useState } from "react"
+import { createContext, useContext, useRef, useState } from "react";
 import Airport from "../types/airport";
 
-export type ActiveFilterType = 'all' | 'true' | 'false'
+export type ActiveFilterType = "all" | "true" | "false";
 
 type UseGlobalType = {
-  airports: Airport[]
-  setAirports: React.Dispatch<React.SetStateAction<Airport[]>>
-  activeFilter: ActiveFilterType
-  setActiveFilter: React.Dispatch<React.SetStateAction<ActiveFilterType>>
-  getAirports: () => Promise<void>
-  updateAirport: (airport: Airport) => Promise<void>
-}
+  airports: Airport[];
+  setAirports: React.Dispatch<React.SetStateAction<Airport[]>>;
+  activeFilter: ActiveFilterType;
+  setActiveFilter: React.Dispatch<React.SetStateAction<ActiveFilterType>>;
+  getAirports: () => Promise<void>;
+  updateAirport: (airport: Airport) => Promise<void>;
+};
 
-const GlobalContext = createContext<UseGlobalType | null>(null)
+const GlobalContext = createContext<UseGlobalType | null>(null);
 
-function GlobalProvider({ children }: {children: React.ReactNode}) {
+function GlobalProvider({ children }: { children: React.ReactNode }) {
   const value = useGlobalProvider();
-  return <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>
+  return (
+    <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>
+  );
 }
 
-const useGlobalProvider = () : UseGlobalType => {
-  const authorization = "Basic " + window.btoa(`${process.env.REACT_APP_API_USERNAME}:${process.env.REACT_APP_API_PASSWORD}`)
+const useGlobalProvider = (): UseGlobalType => {
+  const authorization =
+    "Basic " +
+    window.btoa(
+      `${process.env.REACT_APP_API_USERNAME}:${process.env.REACT_APP_API_PASSWORD}`
+    );
 
-  const [airports, setAirports] = useState<Airport[]>([])
-  const [activeFilter, setActiveFilter] = useState<ActiveFilterType>("all")
-  const isFetching = useRef(false)
+  const [airports, setAirports] = useState<Airport[]>([]);
+  const [activeFilter, setActiveFilter] = useState<ActiveFilterType>("all");
+  const isFetching = useRef(false);
 
   const getAirports = async () => {
-    if (isFetching.current) return
+    if (isFetching.current) return;
 
-    isFetching.current = true
+    isFetching.current = true;
     const response = await fetch(
       "https://flights-api.herokuapp.com/getAirports",
       {
@@ -38,20 +44,20 @@ const useGlobalProvider = () : UseGlobalType => {
           Authorization: authorization,
         },
       }
-    )
+    );
 
     if (!response.ok) {
-      throw new Error(response.statusText)
+      throw new Error(response.statusText);
     }
 
-    const data: Airport[] = await response.json()
-    isFetching.current = false
+    const data: Airport[] = await response.json();
+    isFetching.current = false;
 
     // Sorted alphabetically
-    const airports = data.sort((a, b) => a.iata.localeCompare(b.iata))
+    const airports = data.sort((a, b) => a.iata.localeCompare(b.iata));
 
-    setAirports(airports)
-  }
+    setAirports(airports);
+  };
 
   const updateAirport = async (airport: Airport) => {
     const response = await fetch(
@@ -64,15 +70,15 @@ const useGlobalProvider = () : UseGlobalType => {
         },
         body: JSON.stringify({ active: !airport.active }),
       }
-    )
+    );
 
     if (!response.ok) {
-      throw new Error(response.statusText)
+      throw new Error(response.statusText);
     }
 
     // Get updated list after update some airport
-    getAirports()
-  }
+    getAirports();
+  };
 
   return {
     airports,
@@ -80,14 +86,14 @@ const useGlobalProvider = () : UseGlobalType => {
     activeFilter,
     setActiveFilter,
     getAirports,
-    updateAirport
-  }
-}
+    updateAirport,
+  };
+};
 
 const useGlobal = () => {
-  const context = useContext(GlobalContext)
+  const context = useContext(GlobalContext);
 
   return context as UseGlobalType;
-}
+};
 
-export {useGlobal, GlobalProvider}
+export { useGlobal, GlobalProvider };

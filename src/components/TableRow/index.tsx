@@ -1,22 +1,21 @@
-import React from "react"
-import type Airport from "../../types/airport"
-import { useGlobal } from "../../hooks/useGlobal"
+import React from "react";
+import type Airport from "../../types/airport";
+import { useGlobal } from "../../hooks/useGlobal";
 
 type Props = {
-  airport: Airport
-}
+  airport: Airport;
+};
 
 const TableRow = ({ airport }: Props): JSX.Element => {
-  const {getAirports, updateAirport} = useGlobal()
+  const { updateAirport } = useGlobal();
 
   const handleBtnClick = async () => {
     try {
-      await updateAirport(airport)
-
+      await updateAirport(airport);
     } catch (error: any) {
-      console.error(error.message)
+      console.error(error.message);
     }
-  }
+  };
 
   return (
     <tr>
@@ -32,7 +31,7 @@ const TableRow = ({ airport }: Props): JSX.Element => {
         </button>
       </td>
     </tr>
-  )
-}
+  );
+};
 
-export default TableRow
+export default TableRow;
