@@ -5,6 +5,7 @@ type Airport = {
   lon: number;
   state: string;
   active: boolean;
+  info: string;
 };
 
 export default Airport;

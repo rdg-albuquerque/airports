@@ -9,7 +9,7 @@ type UseGlobalType = {
   activeFilter: ActiveFilterType;
   setActiveFilter: React.Dispatch<React.SetStateAction<ActiveFilterType>>;
   getAirports: () => Promise<void>;
-  updateAirport: (airport: Airport) => Promise<void>;
+  updateAirport: (airport: Airport, additionalInfo?: string) => Promise<void>;
 };
 
 const GlobalContext = createContext<UseGlobalType | null>(null);
@@ -22,6 +22,7 @@ function GlobalProvider({ children }: { children: React.ReactNode }) {
 }
 
 const useGlobalProvider = (): UseGlobalType => {
+  const apiBaseUrl = 'https://flights-api.herokuapp.com'
   const authorization =
     "Basic " +
     window.btoa(
@@ -37,7 +38,7 @@ const useGlobalProvider = (): UseGlobalType => {
 
     isFetching.current = true;
     const response = await fetch(
-      "https://flights-api.herokuapp.com/getAirports",
+      `${apiBaseUrl}/getAirports`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -60,16 +61,16 @@ const useGlobalProvider = (): UseGlobalType => {
     setAirports(airports);
   };
 
-  const updateAirport = async (airport: Airport) => {
+  const updateAirport = async (airport: Airport, additionalInfo?: string) => {
     const response = await fetch(
-      `https://flights-api.herokuapp.com/airportStatus/${airport.iata}`,
+      `${apiBaseUrl}/airportStatus/${airport.iata}`,
       {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           Authorization: authorization,
         },
-        body: JSON.stringify({ active: !airport.active }),
+        body: JSON.stringify({ active: !airport.active, info: additionalInfo }),
       }
     );
 
