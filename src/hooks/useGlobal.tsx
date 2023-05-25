@@ -22,7 +22,7 @@ function GlobalProvider({ children }: { children: React.ReactNode }) {
 }
 
 const useGlobalProvider = (): UseGlobalType => {
-  const apiBaseUrl = 'https://flights-api.herokuapp.com'
+  const apiBaseUrl = 'https://flights-api-2m6f.onrender.com'
   const authorization =
     "Basic " +
     window.btoa(
